@@ -3,41 +3,51 @@ package com.training.newsapp.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.training.newsapp.R
 import com.training.newsapp.databinding.HeadlineItemBinding
 import com.training.newsapp.dataclasses.Headline
 
-class HeadlineAdapter: RecyclerView.Adapter<HeadlineAdapter.HeadlineHolder>() {
+class HeadlineAdapter(private val onItemClick: (Headline) -> Unit): PagingDataAdapter<Headline, HeadlineAdapter.HeadlineHolder>(HeadlineDiffCallback) {
 
-    val headlineList = ArrayList<Headline>()
+    inner class HeadlineHolder(private val binding: HeadlineItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-    inner class HeadlineHolder(item: View): RecyclerView.ViewHolder(item) {
-
-        val binding = HeadlineItemBinding.bind(item)
-
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val headline = getItem(position)
+                    if (headline != null) {
+                        onItemClick(headline)
+                    }
+                }
+            }
+        }
         fun bind(headline: Headline) = with(binding) {
             tvHeader.text = headline.title
-            tvSource.text = headline.source.name
+            tvSource.text = headline.author ?: headline.source.name ?: "News"
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadlineHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.headline_item, parent, false)
-        return HeadlineHolder(view)
+        val binding = HeadlineItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return HeadlineHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return headlineList.size
-    }
 
     override fun onBindViewHolder(holder: HeadlineHolder, position: Int) {
-        holder.bind(headlineList[position])
+        holder.bind(getItem(position) ?: return)
     }
 
+    object HeadlineDiffCallback : DiffUtil.ItemCallback<Headline>() {
+        override fun areItemsTheSame(oldItem: Headline, newItem: Headline): Boolean {
+            return oldItem.title == newItem.title
+        }
 
-    fun addHeadline(headline: Headline){
-        headlineList.add(headline)
-        notifyDataSetChanged()
+        override fun areContentsTheSame(oldItem: Headline, newItem: Headline): Boolean {
+            return oldItem.content == newItem.content && oldItem.author == newItem.author
+        }
     }
 }

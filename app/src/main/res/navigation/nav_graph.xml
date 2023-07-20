@@ -11,35 +11,26 @@
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
-            android:id="@+id/action_newsFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
-        <action
-            android:id="@+id/action_newsFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@android:anim/slide_out_right" />
+            android:id="@+id/action_newsFragment_to_headlineFragment"
+            app:destination="@id/headlineFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.training.newsapp.fragments.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_newsFragment"
-            app:destination="@id/newsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.training.newsapp.fragments.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/headlineFragment"
+        android:name="com.training.newsapp.fragments.HeadlineFragment"
+        android:label="fragment_headline"
+        tools:layout="@layout/fragment_headline" >
         <action
-            android:id="@+id/action_settingsFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_newsFragment"
+            android:id="@+id/action_headlineFragment_to_newsFragment"
             app:destination="@id/newsFragment" />
     </fragment>
 </navigation>
