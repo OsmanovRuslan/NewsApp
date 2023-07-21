@@ -6,12 +6,12 @@ import com.training.newsapp.dataclasses.Headline
 import com.training.newsapp.retrofit.RetrofitInstance
 import com.training.newsapp.retrofit.RetrofitUrls
 
-class NewsPagingSource(private val retrofitInstance: RetrofitInstance) : PagingSource<Int, Headline>() {
+class SearchNewsPagingSource(private val retrofitInstance: RetrofitInstance, private val query: String) : PagingSource<Int, Headline>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Headline> {
         return try {
             val page = params.key ?: 1
-            val response = retrofitInstance.api.getTopNewsUs(RetrofitUrls.API_KEY, page)
+            val response = retrofitInstance.api.getSearchNewsUs(RetrofitUrls.API_KEY, query,  page)
 
 
             LoadResult.Page(

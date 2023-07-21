@@ -1,5 +1,6 @@
 package com.training.newsapp.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import com.training.newsapp.R
 import com.training.newsapp.databinding.HeadlineItemBinding
 import com.training.newsapp.dataclasses.Headline
 
-class HeadlineAdapter(private val onItemClick: (Headline) -> Unit): PagingDataAdapter<Headline, HeadlineAdapter.HeadlineHolder>(HeadlineDiffCallback) {
+class HeadlineAdapter(
+    private val onItemClick: (Headline) -> Unit
+): PagingDataAdapter<Headline, HeadlineAdapter.HeadlineHolder>(HeadlineDiffCallback) {
 
     inner class HeadlineHolder(private val binding: HeadlineItemBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -27,7 +30,12 @@ class HeadlineAdapter(private val onItemClick: (Headline) -> Unit): PagingDataAd
         }
         fun bind(headline: Headline) = with(binding) {
             tvHeader.text = headline.title
-            tvSource.text = headline.author ?: headline.source.name ?: "News"
+            if (headline.source.name == "Google News"){
+                tvSource.text = headline.author ?: headline.source.name
+            } else{
+                tvSourceName.text = headline.source.name ?:headline.author ?: "News"
+            }
+
         }
     }
 
