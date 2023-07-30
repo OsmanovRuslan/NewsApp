@@ -28,7 +28,7 @@ class HeadlineFragment : ViewBindingFragment<FragmentHeadlineBinding>() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val headline : Headline?= arguments?.parcelable("headline")
+        val headline: Headline? = arguments?.parcelable("headline")
         if (headline != null) {
             print(headline.url)
             print(headline.title)
@@ -39,8 +39,6 @@ class HeadlineFragment : ViewBindingFragment<FragmentHeadlineBinding>() {
                 headline.url?.let { wvHeadline.loadUrl(it) }
                 wvHeadline.settings.javaScriptEnabled = true
                 wvHeadline.settings.setSupportZoom(true)
-            } else{
-                loadFragment()
             }
         }
 
@@ -50,15 +48,5 @@ class HeadlineFragment : ViewBindingFragment<FragmentHeadlineBinding>() {
     private inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
         SDK_INT >= 33 -> getParcelable(key, T::class.java)
         else -> @Suppress("DEPRECATION") getParcelable(key) as? T
-    }
-
-    private fun loadFragment() {
-        findNavController().navigate(
-            R.id.action_headlineFragment_to_newsFragment,
-            null,
-            navOptions {
-                popUpTo(R.id.headlineFragment)
-            }
-        )
     }
 }

@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Source(
-    val id: String,
+    val id: String?,
     val name: String?
 ): Parcelable

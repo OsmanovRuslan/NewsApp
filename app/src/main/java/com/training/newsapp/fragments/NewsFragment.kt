@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.Pager
@@ -14,13 +16,18 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.newsapp.R
 import com.training.newsapp.adapters.HeadlineAdapter
+import com.training.newsapp.database.Headlines
+import com.training.newsapp.database.MainDb
 import com.training.newsapp.databinding.FragmentNewsBinding
 import com.training.newsapp.dataclasses.Headline
 import com.training.newsapp.paging.NewsPagingSource
 import com.training.newsapp.paging.SearchNewsPagingSource
 import com.training.newsapp.retrofit.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
@@ -29,17 +36,39 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
     private lateinit var headlineAdapter: HeadlineAdapter
     private lateinit var newsFlow: Flow<PagingData<Headline>>
     private var query = ""
+    private lateinit var db: MainDb
+
+    private val allHeadlinesFlow: Flow<List<Headlines>> by lazy {
+        db.getDao().getHeadlines().flowOn(Dispatchers.IO)
+    }
+
     @SuppressLint("DiscouragedApi", "InternalInsetResource")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        headlineAdapter = HeadlineAdapter { headline ->
-            loadFragment(headline)
-        }
+        db = MainDb.getDb(requireContext())
 
-        newsFlow = Pager(config = PagingConfig(pageSize = 20)){
-            if (query.isNotBlank()){
+        headlineAdapter = HeadlineAdapter(
+            requireContext(),
+            onItemClick = { headline ->
+                loadFragment(headline)
+            },
+            onButtonClickListener = { headline, method ->
+                if (method == "add") {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        addToDatabase(headline)
+                    }
+                } else {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        deleteFromDatabase(headline)
+                    }
+                }
+            }
+        )
+
+        newsFlow = Pager(config = PagingConfig(pageSize = 20)) {
+            if (query.isNotBlank()) {
                 SearchNewsPagingSource(retrofitInstance, query)
-            }else{
+            } else {
                 NewsPagingSource(retrofitInstance)
             }
         }.flow
@@ -63,12 +92,18 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
                 headlineAdapter.submitData(pagingData)
             }
         }
+
+        lifecycleScope.launch {
+            allHeadlinesFlow.collectLatest {
+                headlineAdapter.submitData(it)
+            }
+        }
     }
 
     override fun makeBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentNewsBinding{
+    ): FragmentNewsBinding {
         return FragmentNewsBinding.inflate(inflater)
     }
 
@@ -80,5 +115,21 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
             R.id.action_newsFragment_to_headlineFragment,
             bundle
         )
+    }
+
+    private fun addToDatabase(headline: Headline) {
+        db.getDao().insertHeadline(
+            Headlines(
+                headline.author,
+                headline.content, headline.description,
+                headline.publishedAt, headline.source?.id,
+                headline.source?.name, headline.title,
+                headline.url, headline.urlToImage
+            )
+        )
+    }
+
+    private fun deleteFromDatabase(headline: Headline) {
+        db.getDao().deleteHeadline(headline.title)
     }
 }

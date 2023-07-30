@@ -18,7 +18,11 @@
         android:id="@+id/favoritesFragment"
         android:name="com.training.newsapp.fragments.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_headlineFragment"
+            app:destination="@id/headlineFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.training.newsapp.fragments.SettingsFragment"
@@ -32,5 +36,8 @@
         <action
             android:id="@+id/action_headlineFragment_to_newsFragment"
             app:destination="@id/newsFragment" />
+        <action
+            android:id="@+id/action_headlineFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
 </navigation>
