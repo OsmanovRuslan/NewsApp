@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -45,14 +46,12 @@ class HeadlineAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     val headline = getItem(position)
                     if (headline != null) {
-                        if (binding.btnFavorite.background == ContextCompat.getDrawable(
-                                binding.root.context,
-                                R.drawable.favorite_pressed_icon
-                            )
-                        ) {
+                        if (isInside(headline))
+                        {
                             println("DELETEFROMDATABASE")
                             onButtonClickListener(headline, "delete")
                             binding.btnFavorite.setBackgroundResource(R.drawable.favorite_icon)
+
                         } else {
                             println("ADDTODATABASE")
                             onButtonClickListener(headline, "add")
@@ -61,7 +60,6 @@ class HeadlineAdapter(
                     }
                 }
             }
-
         }
 
         fun bind(headline: Headline) = with(binding) {
@@ -78,6 +76,7 @@ class HeadlineAdapter(
             } else{
                 println("NOTINSIDE")
                 println(headline.title)
+                binding.btnFavorite.setBackgroundResource(R.drawable.favorite_icon)
             }
 
         }

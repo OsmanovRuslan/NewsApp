@@ -58,23 +58,7 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
                     headline.urlToImage
                 )
             )
-        }, onButtonClickListener = { headline, method ->
-            if (method == "add") {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    addToDatabase(
-                        Headline(
-                            headline.author,
-                            headline.content,
-                            headline.description,
-                            headline.publishedAt,
-                            Source(headline.sourceId, headline.sourceName),
-                            headline.title,
-                            headline.url,
-                            headline.urlToImage
-                        )
-                    )
-                }
-            } else {
+        }, onButtonClickListener = { headline ->
                 lifecycleScope.launch(Dispatchers.IO) {
                     deleteFromDatabase(
                         Headline(
@@ -89,7 +73,6 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
                         )
                     )
                 }
-            }
         })
 
         binding.rvFavorites.layoutManager = LinearLayoutManager(this@FavoritesFragment.context)

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--Primary colors of the application LIGHT_THEME-->
+    <color name="teal">#08D9D6</color>
+    <color name="like_black">#252A34</color>
+    <color name="pink">#FF2E63</color>
+    <color name="like_white">#EAEAEA</color>
+
+    <!--Secondary brand color of the application-->
+
+    <!--Other surface colors and red for error color-->
+
+
+    <!--Primary colors of the application LIGHT_THEME-->
+    <color name="like_black_dark">#222831</color>
+    <color name="like_gray_dark">#393E46</color>
+
+
+    <color name="dark">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

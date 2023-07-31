@@ -62,6 +62,11 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
                         deleteFromDatabase(headline)
                     }
                 }
+                lifecycleScope.launch {
+                    allHeadlinesFlow.collectLatest {
+                        headlineAdapter.submitData(it)
+                    }
+                }
             }
         )
 

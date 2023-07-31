@@ -14,7 +14,7 @@ import com.training.newsapp.databinding.HeadlineItemBinding
 class FavoritesAdapter(
     context: Context,
     private val onItemClick: (Headlines) -> Unit,
-    private val onButtonClickListener: (Headlines, String) -> Unit,
+    private val onButtonClickListener: (Headlines) -> Unit,
 ) : RecyclerView.Adapter<FavoritesAdapter.HeadlineViewHolder>() {
 
     private var headlines: List<Headlines> = emptyList()
@@ -54,17 +54,7 @@ class FavoritesAdapter(
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val headline = headlines[position]
-                    if (binding.btnFavorite.background == ContextCompat.getDrawable(
-                            binding.btnFavorite.context,
-                            R.drawable.favorite_pressed_icon
-                        )
-                    ) {
-                        onButtonClickListener(headline, "add")
-                        binding.btnFavorite.setBackgroundResource(R.drawable.favorite_pressed_icon)
-                    } else {
-                        onButtonClickListener(headline, "delete")
-                        binding.btnFavorite.setBackgroundResource(R.drawable.favorite_icon)
-                    }
+                    onButtonClickListener(headline)
                 }
             }
         }
