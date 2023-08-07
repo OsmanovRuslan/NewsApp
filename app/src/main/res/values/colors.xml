@@ -11,11 +11,22 @@
     <!--Other surface colors and red for error color-->
 
 
-    <!--Primary colors of the application LIGHT_THEME-->
+    <!--Primary colors of the application DARK_THEME-->
     <color name="like_black_dark">#222831</color>
-    <color name="like_gray_dark">#393E46</color>
+    <color name="background_night">#2B496D</color>
 
+    <color name="card_night">#3958C6</color>
 
-    <color name="dark">#000000</color>
+    <color name="text_light">#484848</color>
+    <color name="item_light">#64C9D9</color>
+
+    <!-- Для Bottom Sheet  -->
+    <color name="button">#FFFFFF</color>
+    <color name="button_text">#000000</color>
+
+    <color name="item_night">#3B4E51</color>
+    <color name="theme_night">#2C2E2E</color>
+
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 </resources>

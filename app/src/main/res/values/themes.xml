@@ -1,10 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.NewsApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/like_black</item>
-        <item name="colorPrimaryVariant">@color/teal</item>
     </style>
 
-    <style name="Theme.NewsApp" parent="Base.Theme.NewsApp" />
+    <style name="SCREEN">
+        <item name="background">@color/white</item>
+    </style>
+
+    <style name="CustomButtonBottomSheet">
+        <item name="android:backgroundTint">@color/button</item>
+        <item name="android:textColor">@color/button_text</item>
+    </style>
+
+    <style name="CustomCardView">
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
+
+    <style name="CustomTextView">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
