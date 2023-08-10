@@ -1,4 +1,4 @@
-package com.training.newsapp.fragments
+package com.training.newsapp.fragments.news
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,49 +6,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.newsapp.R
 import com.training.newsapp.adapters.HeadlineAdapter
 import com.training.newsapp.database.Headlines
-import com.training.newsapp.database.MainDb
 import com.training.newsapp.databinding.FragmentNewsBinding
-import com.training.newsapp.dataclasses.Headline
-import com.training.newsapp.paging.NewsPagingSource
-import com.training.newsapp.paging.SearchNewsPagingSource
-import com.training.newsapp.retrofit.RetrofitInstance
+import com.training.newsapp.fragments.ViewBindingFragment
+import com.training.newsapp.retrofit.dataclasses.Headline
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
 
-    private val retrofitInstance = RetrofitInstance
     private lateinit var headlineAdapter: HeadlineAdapter
-    private lateinit var newsFlow: Flow<PagingData<Headline>>
-    private var query = ""
-    private lateinit var db: MainDb
 
-    private val allHeadlinesFlow: Flow<List<Headlines>> by lazy {
-        db.getDao().getHeadlines().flowOn(Dispatchers.IO)
+
+    private val vm by lazy {
+        ViewModelProvider(this)[NewsViewModel::class.java]
     }
 
     @SuppressLint("DiscouragedApi", "InternalInsetResource")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = MainDb.getDb(requireContext())
 
-        headlineAdapter = HeadlineAdapter(
-            requireContext(),
+        vm.connectToDb(requireContext())
+
+       headlineAdapter = HeadlineAdapter(
             onItemClick = { headline ->
                 loadFragment(headline)
             },
@@ -62,22 +51,8 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
                         deleteFromDatabase(headline)
                     }
                 }
-                lifecycleScope.launch {
-                    allHeadlinesFlow.collectLatest {
-                        headlineAdapter.submitData(it)
-                    }
-                }
             }
         )
-
-        newsFlow = Pager(config = PagingConfig(pageSize = 20)) {
-            if (query.isNotBlank()) {
-                SearchNewsPagingSource(retrofitInstance, query)
-            } else {
-                NewsPagingSource(retrofitInstance)
-            }
-        }.flow
-
 
         binding.rvNews.layoutManager = LinearLayoutManager(this@NewsFragment.context)
         binding.rvNews.adapter = headlineAdapter
@@ -86,23 +61,31 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
             override fun onQueryTextSubmit(text: String) = false
 
             override fun onQueryTextChange(newText: String): Boolean {
-                query = newText
+                vm.searchHeadline(newText)
                 headlineAdapter.refresh()
                 return true
             }
         })
 
         lifecycleScope.launch {
-            newsFlow.collectLatest { pagingData ->
-                headlineAdapter.submitData(pagingData)
-            }
+            vm.allHeadlinesFlow
+                .collectLatest { headlineAdapter.submitDataFlow(it) }
         }
 
         lifecycleScope.launch {
-            allHeadlinesFlow.collectLatest {
-                headlineAdapter.submitData(it)
-            }
+            vm.newsFlow
+                .collectLatest { headlineAdapter.submitData(it) }
         }
+
+//        vm.newsFlow
+//            .onEach { headlineAdapter.submitData(it) }
+//            .launchIn(lifecycleScope)
+//
+//
+//        vm.allHeadlinesFlow
+//            .onEach { headlineAdapter.submitDataFlow(it) }
+//            .launchIn(lifecycleScope)
+
     }
 
     override fun makeBinding(
@@ -123,7 +106,7 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
     }
 
     private fun addToDatabase(headline: Headline) {
-        db.getDao().insertHeadline(
+        vm.db.getDao().insertHeadline(
             Headlines(
                 headline.author,
                 headline.content, headline.description,
@@ -135,6 +118,6 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
     }
 
     private fun deleteFromDatabase(headline: Headline) {
-        db.getDao().deleteHeadline(headline.title)
+        vm.db.getDao().deleteHeadline(headline.title)
     }
 }

@@ -1,4 +1,4 @@
-package com.training.newsapp.fragments
+package com.training.newsapp.fragments.headline
 
 import android.annotation.SuppressLint
 import android.os.Build.VERSION.SDK_INT
@@ -8,12 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.navOptions
-import com.training.newsapp.R
 import com.training.newsapp.databinding.FragmentHeadlineBinding
-import com.training.newsapp.dataclasses.Headline
+import com.training.newsapp.fragments.ViewBindingFragment
+import com.training.newsapp.retrofit.dataclasses.Headline
 
 
 class HeadlineFragment : ViewBindingFragment<FragmentHeadlineBinding>() {

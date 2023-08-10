@@ -4,8 +4,8 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.training.newsapp.dataclasses.Headline
-import com.training.newsapp.dataclasses.Source
+import com.training.newsapp.retrofit.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.Source
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

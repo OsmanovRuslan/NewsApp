@@ -2,7 +2,7 @@ package com.training.newsapp.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.training.newsapp.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.Headline
 import com.training.newsapp.retrofit.RetrofitInstance
 import com.training.newsapp.retrofit.RetrofitUrls
 

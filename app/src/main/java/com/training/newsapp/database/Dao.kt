@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.training.newsapp.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.Headline
 import kotlinx.coroutines.flow.Flow
 
 @Dao

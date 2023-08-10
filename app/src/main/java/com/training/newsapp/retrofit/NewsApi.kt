@@ -1,6 +1,6 @@
 package com.training.newsapp.retrofit
 
-import com.training.newsapp.dataclasses.News
+import com.training.newsapp.retrofit.dataclasses.News
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

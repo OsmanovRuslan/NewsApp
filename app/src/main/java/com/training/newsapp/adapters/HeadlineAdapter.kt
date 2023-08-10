@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.training.newsapp.R
 import com.training.newsapp.database.Headlines
 import com.training.newsapp.databinding.HeadlineItemBinding
-import com.training.newsapp.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.Headline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HeadlineAdapter(
-    context: Context,
     private val onItemClick: (Headline) -> Unit,
     private val onButtonClickListener: (Headline, String) -> Unit
 ) : PagingDataAdapter<Headline, HeadlineAdapter.HeadlineHolder>(HeadlineDiffCallback) {
@@ -89,7 +88,7 @@ class HeadlineAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitData(headlines: List<Headlines>) {
+    fun submitDataFlow(headlines: List<Headlines>) {
         this.headlines = headlines
         notifyDataSetChanged()
     }

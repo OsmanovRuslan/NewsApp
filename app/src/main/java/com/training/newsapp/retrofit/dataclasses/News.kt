@@ -1,4 +1,4 @@
-package com.training.newsapp.dataclasses
+package com.training.newsapp.retrofit.dataclasses
 
 data class News(
     val status: String,

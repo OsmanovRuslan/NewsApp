@@ -1,37 +1,37 @@
-package com.training.newsapp.fragments
+package com.training.newsapp.fragments.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.newsapp.R
 import com.training.newsapp.adapters.FavoritesAdapter
-import com.training.newsapp.adapters.HeadlineAdapter
 import com.training.newsapp.database.Headlines
 import com.training.newsapp.database.MainDb
 import com.training.newsapp.databinding.FragmentFavoritesBinding
-import com.training.newsapp.dataclasses.Headline
-import com.training.newsapp.dataclasses.Source
+import com.training.newsapp.fragments.ViewBindingFragment
+import com.training.newsapp.fragments.news.NewsViewModel
+import com.training.newsapp.retrofit.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.Source
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
 class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
 
-    private lateinit var db: MainDb
     private lateinit var favoritesAdapter: FavoritesAdapter
-    private val allHeadlinesFlow: Flow<List<Headlines>> by lazy {
-        db.getDao().getHeadlines().flowOn(Dispatchers.IO)
+    private val vm by lazy {
+        ViewModelProvider(this)[FavoritesViewModel::class.java]
     }
-
     override fun makeBinding(
         inflater: LayoutInflater, container: ViewGroup?
     ): FragmentFavoritesBinding {
@@ -40,11 +40,10 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vm.connectToDb(requireContext())
 
-        db = MainDb.getDb(requireContext())
 
         favoritesAdapter = FavoritesAdapter(
-            requireContext(),
             onItemClick = { headline ->
             loadFragment(
                 Headline(
@@ -73,37 +72,27 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
                         )
                     )
                 }
+                lifecycleScope.launch {
+                    vm.allHeadlinesFlow
+                        .collectLatest { favoritesAdapter.submitDataFlow(it) }
+                }
         })
 
         binding.rvFavorites.layoutManager = LinearLayoutManager(this@FavoritesFragment.context)
         binding.rvFavorites.adapter = favoritesAdapter
 
         lifecycleScope.launch {
-            allHeadlinesFlow.collectLatest {
-                favoritesAdapter.submitData(it)
-            }
+            vm.allHeadlinesFlow
+                .collectLatest { favoritesAdapter.submitDataFlow(it) }
         }
+//        vm.allHeadlinesFlow
+//            .onEach { favoritesAdapter.submitDataFlow(it) }
+//            .launchIn(lifecycleScope)
     }
 
-    private fun addToDatabase(headline: Headline) {
-        db.getDao().insertHeadline(
-            Headlines(
-                headline.author,
-                headline.content,
-                headline.description,
-                headline.publishedAt,
-                headline.source?.id,
-                headline.source?.name,
-                headline.title,
-                headline.url,
-                headline.urlToImage
-            )
-        )
-    }
 
     private fun deleteFromDatabase(headline: Headline) {
-        println(headline.title + headline.source?.name + headline.publishedAt)
-        db.getDao().deleteHeadline(headline.title)
+        vm.db.getDao().deleteHeadline(headline.title)
     }
 
     private fun loadFragment(headline: Headline) {

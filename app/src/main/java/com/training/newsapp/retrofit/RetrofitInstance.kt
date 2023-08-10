@@ -1,8 +1,8 @@
 package com.training.newsapp.retrofit
 
-import com.training.newsapp.dataclasses.Headline
-import com.training.newsapp.dataclasses.News
-import com.training.newsapp.dataclasses.Source
+import com.training.newsapp.retrofit.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.News
+import com.training.newsapp.retrofit.dataclasses.Source
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

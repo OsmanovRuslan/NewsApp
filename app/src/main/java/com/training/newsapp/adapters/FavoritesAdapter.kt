@@ -12,7 +12,6 @@ import com.training.newsapp.database.MainDb
 import com.training.newsapp.databinding.HeadlineItemBinding
 
 class FavoritesAdapter(
-    context: Context,
     private val onItemClick: (Headlines) -> Unit,
     private val onButtonClickListener: (Headlines) -> Unit,
 ) : RecyclerView.Adapter<FavoritesAdapter.HeadlineViewHolder>() {
@@ -34,7 +33,7 @@ class FavoritesAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitData(headlines: List<Headlines>) {
+    fun submitDataFlow(headlines: List<Headlines>) {
         this.headlines = headlines
         notifyDataSetChanged()
     }
