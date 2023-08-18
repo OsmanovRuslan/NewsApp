@@ -4,10 +4,11 @@
     <style name="Base.Theme.NewsApp" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/like_black</item>
+        <item name="colorOnPrimary">@color/white</item>
     </style>
 
     <style name="SCREEN">
-        <item name="background">@color/background_night</item>
+        <item name="android:background">@color/background_night</item>
     </style>
 
     <style name="CustomButtonBottomSheet">
