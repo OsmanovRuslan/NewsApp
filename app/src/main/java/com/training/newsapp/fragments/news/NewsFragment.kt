@@ -45,10 +45,18 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
                 if (method == "add") {
                     lifecycleScope.launch(Dispatchers.IO) {
                         addToDatabase(headline)
+                        launch(Dispatchers.Main) {
+                            vm.allHeadlinesFlow
+                            .collectLatest { headlineAdapter.submitDataFlow(it) }
+                        }
                     }
                 } else {
                     lifecycleScope.launch(Dispatchers.IO) {
                         deleteFromDatabase(headline)
+                        launch(Dispatchers.Main) {
+                            vm.allHeadlinesFlow
+                                .collectLatest { headlineAdapter.submitDataFlow(it) }
+                        }
                     }
                 }
             }

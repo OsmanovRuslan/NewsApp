@@ -71,10 +71,10 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
                             headline.urlToImage
                         )
                     )
-                }
-                lifecycleScope.launch {
-                    vm.allHeadlinesFlow
-                        .collectLatest { favoritesAdapter.submitDataFlow(it) }
+                    launch(Dispatchers.Main) {
+                        vm.allHeadlinesFlow
+                            .collectLatest { favoritesAdapter.submitDataFlow(it) }
+                    }
                 }
         })
 
