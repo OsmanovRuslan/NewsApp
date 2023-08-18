@@ -16,20 +16,20 @@ import com.training.newsapp.database.Headlines
 import com.training.newsapp.databinding.FragmentNewsBinding
 import com.training.newsapp.fragments.ViewBindingFragment
 import com.training.newsapp.retrofit.dataclasses.Headline
+import com.training.newsapp.retrofit.dataclasses.News
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
 
     private lateinit var headlineAdapter: HeadlineAdapter
 
 
-    private val vm by lazy {
-        ViewModelProvider(this)[NewsViewModel::class.java]
-    }
+    private val vm: NewsViewModel by viewModel()
 
     @SuppressLint("DiscouragedApi", "InternalInsetResource")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

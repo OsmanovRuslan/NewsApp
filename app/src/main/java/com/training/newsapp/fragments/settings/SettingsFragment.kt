@@ -15,13 +15,12 @@ import com.training.newsapp.preferences.IPrefs
 import com.training.newsapp.preferences.Prefs
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : ViewBindingFragment<FragmentSettingsBinding>() {
 
 
-    private val vm by lazy {
-        ViewModelProvider(this, SettingsViewModelFactory(requireContext()))[SettingsViewModel::class.java]
-    }
+    private val vm: SettingsViewModel by viewModel()
     private val bottomSheetBinding by lazy { BottomSheetDialogBinding.inflate(layoutInflater) }
 
 

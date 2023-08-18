@@ -24,14 +24,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
 
     private lateinit var favoritesAdapter: FavoritesAdapter
-    private val vm by lazy {
-        ViewModelProvider(this)[FavoritesViewModel::class.java]
-    }
+    private val vm: FavoritesViewModel by viewModel()
     override fun makeBinding(
         inflater: LayoutInflater, container: ViewGroup?
     ): FragmentFavoritesBinding {
