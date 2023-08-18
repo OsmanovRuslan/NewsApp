@@ -72,6 +72,11 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
                             headline.urlToImage
                         )
                     )
+                    launch(Dispatchers.Main) {
+                        allHeadlinesFlow.collectLatest {
+                            favoritesAdapter.submitDataFlow(it)
+                        }
+                    }
                 }
         })
 
@@ -80,25 +85,9 @@ class FavoritesFragment : ViewBindingFragment<FragmentFavoritesBinding>() {
 
         lifecycleScope.launch {
             allHeadlinesFlow.collectLatest {
-                favoritesAdapter.submitData(it)
+                favoritesAdapter.submitDataFlow(it)
             }
         }
-    }
-
-    private fun addToDatabase(headline: Headline) {
-        db.getDao().insertHeadline(
-            Headlines(
-                headline.author,
-                headline.content,
-                headline.description,
-                headline.publishedAt,
-                headline.source?.id,
-                headline.source?.name,
-                headline.title,
-                headline.url,
-                headline.urlToImage
-            )
-        )
     }
 
     private fun deleteFromDatabase(headline: Headline) {

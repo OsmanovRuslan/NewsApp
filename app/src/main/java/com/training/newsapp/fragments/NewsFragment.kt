@@ -56,15 +56,20 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
                 if (method == "add") {
                     lifecycleScope.launch(Dispatchers.IO) {
                         addToDatabase(headline)
+                        launch(Dispatchers.Main) {
+                            allHeadlinesFlow.collectLatest {
+                                headlineAdapter.submitDataFlow(it)
+                            }
+                        }
                     }
                 } else {
                     lifecycleScope.launch(Dispatchers.IO) {
                         deleteFromDatabase(headline)
-                    }
-                }
-                lifecycleScope.launch {
-                    allHeadlinesFlow.collectLatest {
-                        headlineAdapter.submitData(it)
+                        launch(Dispatchers.Main) {
+                            allHeadlinesFlow.collectLatest {
+                                headlineAdapter.submitDataFlow(it)
+                            }
+                        }
                     }
                 }
             }
@@ -100,7 +105,7 @@ class NewsFragment : ViewBindingFragment<FragmentNewsBinding>() {
 
         lifecycleScope.launch {
             allHeadlinesFlow.collectLatest {
-                headlineAdapter.submitData(it)
+                headlineAdapter.submitDataFlow(it)
             }
         }
     }

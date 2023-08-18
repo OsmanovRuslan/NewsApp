@@ -89,7 +89,7 @@ class HeadlineAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitData(headlines: List<Headlines>) {
+    fun submitDataFlow(headlines: List<Headlines>) {
         this.headlines = headlines
         notifyDataSetChanged()
     }

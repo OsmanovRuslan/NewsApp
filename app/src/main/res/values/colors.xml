@@ -9,7 +9,7 @@
     <!--Secondary brand color of the application-->
 
     <!--Other surface colors and red for error color-->
-
+    <color name="settings_changer">#393E46</color>
 
     <!--Primary colors of the application DARK_THEME-->
     <color name="like_black_dark">#222831</color>
@@ -29,4 +29,5 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
 </resources>

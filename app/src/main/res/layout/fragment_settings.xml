@@ -36,7 +36,7 @@
         android:id="@+id/text_theme"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:background="@drawable/btn_corner_settings"
+        android:background= "@drawable/btn_corner_settings"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/textViewTheme"
         app:layout_constraintEnd_toEndOf="parent"
