@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">News App</string>
+    <string name="light">Light</string>
+    <string name="night">Night</string>
+    <string name="system">System</string>
+    <string name="russian">Russian</string>
+    <string name="english">English</string>
+    <string name="settings">Settings</string>
+    <string name="theme">App\'s theme</string>
+    <string name="language">App\'s language</string>
+    <string name="news">News</string>
+    <string name="favorites">Favorites</string>
+    <string name="source">Source:</string>
+</resources>
