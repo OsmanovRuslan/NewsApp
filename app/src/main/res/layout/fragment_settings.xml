@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Настройки"
+        android:text="@string/settings"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:padding="16dp"
-        android:text="Тема приложения"
+        android:text="@string/theme"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_title" />
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:padding="16dp"
-        android:text="Язык интерфейса"
+        android:text="@string/language"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTheme" />

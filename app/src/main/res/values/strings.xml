@@ -3,4 +3,12 @@
     <string name="light">Светлая</string>
     <string name="night">Темная</string>
     <string name="system">Системная</string>
+    <string name="russian">Русский</string>
+    <string name="english">Английский</string>
+    <string name="settings">Настройки</string>
+    <string name="theme">Тема приложения</string>
+    <string name="language">Язык приложения</string>
+    <string name="news">Новости</string>
+    <string name="favorites">Избранное</string>
+    <string name="source">Источник:</string>
 </resources>
