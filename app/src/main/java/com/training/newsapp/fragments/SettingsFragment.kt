@@ -48,9 +48,9 @@ class SettingsFragment : ViewBindingFragment<FragmentSettingsBinding>() {
             "3" -> binding.textTheme.text = requireContext().getString(R.string.system)
             else ->  binding.textTheme.text = requireContext().getString(R.string.light)
         }
-        when (prefs.getString("language", "1")) {
-            "1" -> binding.textLanguage.text = requireContext().getString(R.string.russian)
-            "2" -> binding.textLanguage.text = requireContext().getString(R.string.english)
+        when (prefs.getString("language", "ru")) {
+            "ru" -> binding.textLanguage.text = requireContext().getString(R.string.russian)
+            "en" -> binding.textLanguage.text = requireContext().getString(R.string.english)
             else ->  binding.textTheme.text = requireContext().getString(R.string.russian)
         }
 
@@ -80,11 +80,11 @@ class SettingsFragment : ViewBindingFragment<FragmentSettingsBinding>() {
             bottomSheetDialogLanguage.show()
         }
         bottomSheetBindingLanguage.btnRussian .setOnClickListener {
-            languageSetListener("1")
+            languageSetListener("ru")
             bottomSheetDialogLanguage.dismiss()
         }
         bottomSheetBindingLanguage.btnEnglish.setOnClickListener {
-            languageSetListener("2")
+            languageSetListener("en")
             bottomSheetDialogLanguage.dismiss()
         }
     }
@@ -105,18 +105,18 @@ class SettingsFragment : ViewBindingFragment<FragmentSettingsBinding>() {
 
     private fun languageSetListener(languageCode: String) {
         val language = mapOf(
-            "1" to Triple("ru", R.string.russian, "1"),
-            "2" to Triple("en", R.string.english, "2"),
+            "ru" to Pair("ru", R.string.russian),
+            "en" to Pair("en", R.string.english),
         )
 
-        language[languageCode]?.let { (language, stringRes, languageTag) ->
+        language[languageCode]?.let { (language, stringRes) ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
                 requireContext().getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(language)
             } else {
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language))
             }
             binding.textLanguage.text = requireContext().getString(stringRes)
-            prefs.edit().putString("language", languageTag).apply()
+            prefs.edit().putString("language", language).apply()
         }
     }
 
